@@ -1298,3 +1298,25 @@ class MiniGridEnv(gym.Env):
         if self.window:
             self.window.close()
         return
+
+    # added code to support the DSL
+    def front_is_clear(self):
+        fwd_pos = self.front_pos
+        fwd_cell = self.grid.get(*fwd_pos)
+        if fwd_cell == None or fwd_cell.can_overlap():
+            return True
+        return False
+
+    def left_is_clear(self):
+        left_pos = self.agent_pos + (-1 * self.right_vec)
+        left_cell = self.grid.get(*left_pos)
+        if left_cell == None or left_cell.can_overlap():
+            return True
+        return False
+
+    def right_is_clear(self):
+        right_pos = self.agent_pos + self.right_vec
+        right_cell = self.grid.get(*right_pos)
+        if right_cell == None or right_cell.can_overlap():
+            return True
+        return False
