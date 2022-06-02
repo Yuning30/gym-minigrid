@@ -51,7 +51,6 @@ def execute_program_batch(task, seed, program):
 
 def execute_program_single_seed(task, seed, program):
     env = MiniGridRobot(task, seed)
-    env.env.reset()
     try:
         program.exec(env)
     except NotImplementedError:
@@ -61,11 +60,15 @@ def execute_program_single_seed(task, seed, program):
         print("Obtained negative reward, reach bad state")
         return 1
     except Done:
-        assert env.reward > 0
-        print("reward", env.reward)
-        print("Found a solution")
-        print(program)
-        exit()
+        if env.reward > 0:
+            print("reward", env.reward)
+            print("Found a solution")
+            print(program)
+            exit()
+        else:
+            print("Found a bad program")
+            print(program)
+            return 1
     if env.steps > env.max_steps:
         return 1
     assert env.reward == 0
@@ -98,9 +101,8 @@ def top_down_enumeration_with_pq(task, seed, initial_program):
             exit()
         new_programs = p.expand()
         for prog in new_programs:
-            # print(prog)
             reward = execute_program_batch(task, seed, prog)
-            print(prog, reward)
+            # print(prog, reward)
             heapq.heappush(pq, (reward + weight * prog.rules, reward, prog))
         # if p.ground():
         #     print(p)
@@ -199,8 +201,8 @@ if __name__ == "__main__":
     parser.add_argument('--task', type=str)
     args = parser.parse_args()
     task = args.task
-    seed = [0]
-    env = MiniGridRobot(task , 0)
+    seed = [3]
+    env = MiniGridRobot(task , 3)
     # env.env.render()
     if args.pq:
         print("with pq")
