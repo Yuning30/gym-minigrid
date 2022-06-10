@@ -194,7 +194,7 @@ def top_down_enumeration(task, seed, initial_program):
 if __name__ == "__main__":
     # task = "fourCorners"
 
-    candidate = Prog()
+    candidate = Prog(Semicolon(TurnRight()))
 
     parser = argparse.ArgumentParser()
     parser.add_argument('--pq', type=bool, default=True)
@@ -202,8 +202,9 @@ if __name__ == "__main__":
     args = parser.parse_args()
     task = args.task
     seed = [3]
-    env = MiniGridRobot(task , 3)
-    # env.env.render()
+    env = MiniGridRobot(task , 0)
+    env.env.render()
+    exit()
     if args.pq:
         print("with pq")
         top_down_enumeration_with_pq(task, seed, candidate)

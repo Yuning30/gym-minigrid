@@ -11,7 +11,7 @@ class NegativeReward(Exception):
 
 # single karel robot
 class MiniGridRobot:
-    def __init__(self, task, seed=999, max_steps=100):
+    def __init__(self, task, seed=999, max_steps=150):
         
         self.task = task
         self.seed = seed
@@ -19,6 +19,8 @@ class MiniGridRobot:
         self.steps = 0
 
         self.env = gym.make(self.task)
+        self.env.seed(seed)
+        self.env.reset()
 
         self.reward = 0
 
